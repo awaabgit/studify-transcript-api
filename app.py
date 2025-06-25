@@ -1,42 +1,23 @@
 from fastapi import FastAPI, Query
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
-from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-# Optional: allow access from any frontend (can restrict to Bolt domain later)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 @app.get("/")
-async def root():
-    return {"message": "Studify transcript API is working!"}
+def read_root():
+    return {"message": "Local transcript API running"}
 
 @app.get("/transcript")
-async def get_transcript(video_id: str = Query(..., description="YouTube video ID only")):
+def get_transcript(video_id: str = Query(...)):
     try:
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         full_text = " ".join([entry['text'] for entry in transcript])
         return {"transcript": full_text}
     except TranscriptsDisabled:
-        return JSONResponse(
-            status_code=400,
-            content={"error": "Transcripts are disabled for this video."}
-        )
+        return JSONResponse(status_code=400, content={"error": "Transcripts are disabled."})
     except NoTranscriptFound:
-        return JSONResponse(
-            status_code=404,
-            content={"error": "Transcript not found. The video may not have captions or may be restricted."}
-        )
+        return JSONResponse(status_code=404, content={"error": "Transcript not found."})
     except Exception as e:
-        return JSONResponse(
-            status_code=500,
-            content={"error": str(e)}
-        )
+        return JSONResponse(status_code=500, content={"error": str(e)})
