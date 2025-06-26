@@ -10,6 +10,17 @@ def _get_transcript_json(video_id):
         }
     )
     return response.text
+from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api._errors import TranscriptDisabled, NoTranscriptFound
+
 def get_transcript_json(video_id):
-    # TEMPORARY test logic - replace with real scraping later
-    return f"<html><body>This is a fake transcript for {video_id}</body></html>"
+    try:
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        full_text = " ".join(entry["text"] for entry in transcript)
+        return f"<html><body>{full_text}</body></html>"
+    except TranscriptDisabled:
+        return "<html><body>Error: Transcripts are disabled for this video.</body></html>"
+    except NoTranscriptFound:
+        return "<html><body>Error: No transcript found for this video.</body></html>"
+    except Exception as e:
+        return f"<html><body>Unexpected error: {str(e)}</body></html>"
