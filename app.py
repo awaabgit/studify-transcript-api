@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "youtube_transcript_api")))
 
 from youtube_transcript_api._api import get_transcript_json
-from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
+
 
 app = FastAPI()
 
@@ -16,7 +16,7 @@ def read_root():
 @app.get("/transcript")
 def get_transcript(video_id: str = Query(...)):
     try:
-        html = _get_transcript_json(video_id)
+        html = get_transcript_json(video_id)
         return {"html_snippet": html[:1000]}  # for debugging, limit output
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
