@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "youtube_transcript_api")))
 
-from _api import _get_transcript_json
+from youtube_transcript_api._api import get_transcript_json
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 
 app = FastAPI()
