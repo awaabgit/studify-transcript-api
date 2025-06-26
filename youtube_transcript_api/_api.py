@@ -10,3 +10,6 @@ def _get_transcript_json(video_id):
         }
     )
     return response.text
+def get_transcript_json(video_id):
+    # TEMPORARY test logic - replace with real scraping later
+    return f"<html><body>This is a fake transcript for {video_id}</body></html>"
