@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-youtube-transcript-api
 python-multipart
 aiofiles
 youtube-transcript-api==0.4.5
