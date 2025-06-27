@@ -17,6 +17,5 @@ def read_root():
 def get_transcript(video_id: str = Query(...)):
     try:
         html = get_transcript_json(video_id)
-        return {"html_snippet": html[:1000]}  # for debugging, limit output
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
