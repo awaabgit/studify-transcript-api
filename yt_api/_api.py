@@ -14,17 +14,17 @@ def get_transcript_json(video_id: str):
     except (TranscriptsDisabled, NoTranscriptFound) as e:
         return f"<html><body>Error: {str(e)}</body></html>"
 
-   except Exception as e:
-    print("Default method failed. Trying ScraperAPI...")
-    try:
-        youtube_url = f"https://www.youtube.com/watch?v={video_id}"
-        params = {
-            'api_key': SCRAPER_API_KEY,
-            'url': youtube_url,
-        }
-        response = requests.get("http://api.scraperapi.com/", params=params)
-        response.raise_for_status()
-        return f"<html><body>{response.text}</body></html>"
+    except Exception as e:
+        print("Default method failed. Trying ScraperAPI...")
+        try:
+            youtube_url = f"https://www.youtube.com/watch?v={video_id}"
+            params = {
+                'api_key': SCRAPER_API_KEY,
+                'url': youtube_url,
+            }
+            response = requests.get("http://api.scraperapi.com/", params=params)
+            response.raise_for_status()
+            return f"<html><body>{response.text}</body></html>"
 
-    except Exception as fallback_error:
-        return f"<html><body>ScraperAPI failed: {str(fallback_error)}</body></html>"
+        except Exception as fallback_error:
+            return f"<html><body>ScraperAPI failed: {str(fallback_error)}</body></html>"
