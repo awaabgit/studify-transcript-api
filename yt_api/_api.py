@@ -18,10 +18,11 @@ def get_transcript_json(video_id: str):
         print("Default method failed. Trying ScraperAPI...")
         try:
             youtube_url = f"https://www.youtube.com/watch?v={video_id}"
-            scraper_url = f"http://api.scraperapi.com?api_key={SCRAPER_API_KEY}&url={youtube_url}"
-
-            response = requests.get(scraper_url)
-            response.raise_for_status()
+          params = {
+    'api_key': SCRAPER_API_KEY,
+    'url': youtube_url,
+}
+response = requests.get("http://api.scraperapi.com/", params=params)
 
             # Just return the HTML (for now). You can later parse this into real transcript
             return f"<html><body>{response.text}</body></html>"
