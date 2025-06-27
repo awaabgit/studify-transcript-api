@@ -4,11 +4,13 @@ from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFoun
 def get_transcript_json(video_id: str):
     try:
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        full_text = " ".join(entry["text"] for entry in transcript)
-        return f"<html><body>{full_text}</body></html>"
+        return {
+            "video_id": video_id,
+            "transcript": transcript
+        }
     except TranscriptsDisabled:
-        return "<html><body>Error: Transcripts are disabled for this video.</body></html>"
+        return {"error": "Transcripts are disabled for this video."}
     except NoTranscriptFound:
-        return "<html><body>Error: No transcript found for this video.</body></html>"
+        return {"error": "No transcript found for this video."}
     except Exception as e:
-        return f"<html><body>Unexpected error: {str(e)}</body></html>"
+        return {"error": str(e)}
