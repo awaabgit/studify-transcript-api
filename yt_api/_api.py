@@ -2,7 +2,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 import requests
 
-SCRAPER_API_KEY = "48c9a193c3eab620c3e3d5fed532fcf81"  # replace with your key
+SCRAPER_API_KEY = "48c9a193c3eab620c3e3d5fed532fc81"  # replace with your key
 
 def get_transcript_json(video_id: str):
     try:
